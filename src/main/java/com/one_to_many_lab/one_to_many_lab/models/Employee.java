@@ -1,7 +1,11 @@
 package com.one_to_many_lab.one_to_many_lab.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "employees")
@@ -22,8 +26,11 @@ public class Employee {
     @Column(name ="employee_number")
     private String employeeNumber;
 
-//    @Column(name ="assignment")
-//    private Assignment assignment;
+//    @JsonIgnoreProperties({"assignment"})
+//    @Column(name ="employee")
+    @OneToMany(mappedBy = "employee")
+    private List<Assignment> assignments;
+
 
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
@@ -32,14 +39,11 @@ public class Employee {
     public Employee(){};
 
     public Employee(String firstName, String lastName, String employeeNumber, Department department){
-//        Assignment assignment, Department
-//    } department)
-
         this.firstName = firstName;
         this.lastName = lastName;
         this.employeeNumber = employeeNumber;
-//        this.assignment = assignment;
         this.department = department;
+        this.assignments = new ArrayList<>();
     }
 
     public Long getId() {
@@ -74,13 +78,13 @@ public class Employee {
         this.employeeNumber = employeeNumber;
     }
 
-//    public Assignment getAssignment() {
-//        return assignment;
-//    }
-//
-//    public void setAssignment(Assignment assignment) {
-//        this.assignment = assignment;
-//    }
+    public List<Assignment> getAssignment() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
 //
     public Department getDepartment() {
         return department;
